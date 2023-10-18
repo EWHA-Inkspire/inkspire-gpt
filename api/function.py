@@ -63,3 +63,14 @@ def getTownBackground(town, background, mood):
     ]
     
     callGPT(messages=messages, stream=True)
+
+# 응답 요약
+def summary(response):
+    query = response + " 요약"
+    messages = [
+        {"role": "user", "content": query}
+    ]
+    
+    response = callGPT(messages=messages, stream=False)
+    
+    return response['choices'][0]['message']['content']
