@@ -51,3 +51,15 @@ def getTownName(background, mood, player_name):
     print("안녕하세요 " + player_name + "님. 지금부터 당신을 " + town + "에 초대합니다.\n")
     
     return town
+
+# 배경에 대한 설명
+def getTownBackground(town, background, mood):
+    town_setting = "사용자가 시나리오 속 캐릭터라고 상정하고 " + background + " 배경의 " + mood + " 분위기의 TRPG 시나리오를 진행해줘."
+    query = town + "의 배경에 대해 자세히 설명해줘"
+    
+    messages = [
+        {"role": "system", "content": town_setting},
+        {"role": "user", "content": query}
+    ]
+    
+    callGPT(messages=messages, stream=True)
