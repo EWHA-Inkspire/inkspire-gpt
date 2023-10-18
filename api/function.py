@@ -17,3 +17,19 @@ def printStream(response):
     print("\n")
 
     return answer
+
+# GPT API 호출 함수 & 스트림 형태 출력
+def callGPT(messages, stream): 
+    model = "gpt-3.5-turbo"
+    
+    response = openai.ChatCompletion.create(
+        model = model,
+        messages = messages,
+        stream = stream,
+        temperature = 0, # 랜덤성 조절
+    )
+    
+    if(stream):
+        return printStream(response=response)
+    
+    return response
