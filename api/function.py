@@ -33,3 +33,21 @@ def callGPT(messages, stream):
         return printStream(response=response)
     
     return response
+
+# 배경, 분위기에 맞는 마을 이름 생성
+def getTownName(background, mood, player_name):
+    # 마을 이름 출력을 위한 세팅 & 쿼리
+    town_setting = "너는 항상 한 단어로만 답을 출력해야해"
+    query = background + " 배경의 " + mood + "분위기에 어울리는 마을 이름 1개를 출력해줘"
+    
+    messages = [
+        {"role": "system", "content": town_setting},
+        {"role": "user", "content": query}
+    ]
+    
+    response = callGPT(messages=messages, stream=False)
+    
+    town = response['choices'][0]['message']['content']
+    print("안녕하세요 " + player_name + "님. 지금부터 당신을 " + town + "에 초대합니다.\n")
+    
+    return town
