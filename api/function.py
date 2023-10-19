@@ -2,11 +2,7 @@ import openai
 import os
 
 # 환경변수로 설정해 둔 API 키 받아오기
-#openai.api_key = os.getenv("OPENAI_API_KEY")
-
-# 발급받은 API 키 설정
-OPENAI_API_KEY = "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"
-openai.api_key = OPENAI_API_KEY
+openai.api_key = os.getenv("OPENAI_API_KEY")
 
 # GPT 출력값 스트림 형태로 출력 & 결과값 반환
 
