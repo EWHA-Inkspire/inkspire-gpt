@@ -1,5 +1,8 @@
 import openai
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 # 환경변수로 설정해 둔 API 키 받아오기
 openai.api_key = os.getenv("OPENAI_API_KEY")
@@ -26,7 +29,7 @@ def callGPT(messages, stream):
         model = model,
         messages = messages,
         stream = stream,
-        temperature = 0, # 랜덤성 조절
+        temperature = 0.5, # 랜덤성 조절
     )
     
     if(stream):
