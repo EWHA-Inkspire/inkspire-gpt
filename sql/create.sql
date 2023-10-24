@@ -4,10 +4,12 @@ CREATE TABLE member (
 		pw VARCHAR(100) NOT NULL
 );
 
-CREATE TABLE member (
-		member_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
-		email VARCHAR(100) NOT NULL,
-		pw VARCHAR(100) NOT NULL
+CREATE TABLE player (
+    player_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(50) NOT NULL,
+    attack INT NOT NULL,
+    defense INT NOT NULL,
+    hp INT NOT NULL
 );
 
 CREATE TABLE script (
@@ -54,12 +56,12 @@ CREATE TABLE inventory (
     amount INT NOT NULL
 );
 
-CREATE TABLE option (
-    option_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+CREATE TABLE message (
+    msg_id BIGINT NOT NULL AUTO_INCREMENT PRIMARY KEY,
     script_id BIGINT NOT NULL,
     player_id BIGINT NOT NULL,
-    options VARCHAR(300) NOT NULL,
-    choice VARCHAR(100) NOT NULL
+    role enum('system', 'assistant', 'user') NOT NULL,
+    query VARCHAR(1000) NULL
 );
 
 ALTER TABLE script ADD CONSTRAINT FK_player_TO_script_1 FOREIGN KEY (
@@ -111,14 +113,14 @@ REFERENCES item (
 	item_id
 );
 
-ALTER TABLE option ADD CONSTRAINT FK_script_TO_option_1 FOREIGN KEY (
+ALTER TABLE message ADD CONSTRAINT FK_script_TO_message_1 FOREIGN KEY (
 	script_id
 )
 REFERENCES script (
 	script_id
 );
 
-ALTER TABLE option ADD CONSTRAINT FK_script_TO_option_2 FOREIGN KEY (
+ALTER TABLE message ADD CONSTRAINT FK_script_TO_message_2 FOREIGN KEY (
 	player_id
 )
 REFERENCES script (
