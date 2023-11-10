@@ -13,16 +13,20 @@ player_name = input("플레이어 이름: ")
 town = intro.getTownName(background, mood, player_name)
 # 마을 배경 설명
 intro.getTownBackground(town, background, mood)
-# NPC 생성
-NPC_name = npc.getNPCName(background, mood)
-NPC_info = npc.getNPCInfo(town, NPC_name)
+# 조력자 NPC 생성
+PNPC_name = npc.getProtaNPCName(background, mood)
+PNPC_info = npc.getProtaNPCInfo(town, PNPC_name)
+#적대자 NPC 생성
+ANPC_name = npc.getAntaNPCName(background, mood)
+ANPC_info = npc.getAntaNPCInfo(town, ANPC_name)
 
 # 2. 게임 시작
 # 시스템 설정 - 데이터 적재용
 system_intro = c.SYSTEM_INTRO
 
-query = "마을 이름은 " + town + "이고, 플레이어 이름은 " + player_name + "이야. NPC 이름은 " + \
-    NPC_name + "이고," + NPC_name + "은 " + NPC_info + "처럼 행동해야 해"
+query = "마을 이름은 " + town + "이고, 플레이어 이름은 " + player_name + "이야. 조력자 NPC 이름은 " + \
+    PNPC_name + "이고," + PNPC_name + "은 " + PNPC_info + "처럼 행동해야 해. 적대자 NPC 이름은 " + \
+    ANPC_name + "이고," + ANPC_name + "은 " + ANPC_info + "처럼 행동해야 해"
 query += background + " 배경의 " + mood + " 분위기의 TRPG 스크립트 생성"
 
 messages = [
