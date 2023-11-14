@@ -29,4 +29,7 @@ def getTownBackground(town, background, genre):
         {"role": "user", "content": query}
     ]
 
-    callGPT(messages=messages, stream=True)
+    response = callGPT(messages=messages, stream=False)
+    
+    town_detail = response['choices'][0]['message']['content']
+    return town_detail

@@ -44,10 +44,10 @@ class ScriptView(views.APIView):
             # 입력받은 배경 및 장르를 토대로 마을 이름 & 배경 생성
             background = serializer.validated_data.get('background')
             genre = serializer.validated_data.get('genre')
-            player_name = request.data.characterName
+            player_name = character.name
             
-            town_name = getTownName(background=background, mood=genre, player_name=player_name)
-            town_detail = getTownBackground(town=town_name, background=background, mood=genre)
+            town_name = getTownName(background=background, genre=genre, player_name=player_name)
+            town_detail = getTownBackground(town=town_name, background=background, genre=genre)
             
             # 시리얼라이저에 정보 추가
             serializer.validated_data['town'] = town_name
