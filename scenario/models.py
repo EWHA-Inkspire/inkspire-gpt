@@ -63,10 +63,23 @@ class Gpt(models.Model):
 
 # NPC 모델
 class Npc(models.Model):
+    ROLE_CHOICES = (
+        ('prota', 'prota'),
+        ('anta', 'anta'),
+    )
     # npc_id : 자동 생성 (PK)
     npc_id = models.BigAutoField(primary_key=True)
     
     # 외래키 지정 (Script - Gpt -> 1 : N 관계)
     script = models.ForeignKey(Script, related_name='npcs', on_delete=models.CASCADE, db_column="script_id")
     
-    # 다른 필드값?
+    # npc 이름
+    name = models.CharField(default='', max_length=100, null=False, blank=False)
+    # 역할
+    role = models.CharField(default='', choices=ROLE_CHOICES, max_length=10, null=False, blank=False)
+    # 직업
+    job = models.CharField(default='', max_length=100, null=False, blank=False)
+    
+    def __str__(self):
+        return self.name
+    
