@@ -28,7 +28,12 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    "*",
+    "175.114.74.2",
+    "175.114.74.2:8000",
+    "localhost:8000",
+]
 
 
 # Application definition
@@ -40,12 +45,19 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # CORS 관련 설정
+    'corsheaders',
+    # 토큰 관련 설정
+    'rest_framework.authtoken',
     'rest_framework',
     'account',
     'scenario',
 ]
 
 MIDDLEWARE = [
+    # CORS 관련 설정
+    'corsheaders.middleware.CorsMiddleware', 
+    'django.middleware.common.CommonMiddleware', 
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -54,6 +66,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+# settings.py 파일에서 CORS 설정
+CORS_ALLOW_HEADERS = ['x-user-id']
 
 ROOT_URLCONF = 'server.urls'
 
@@ -133,3 +150,30 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+## CORS
+CORS_ORIGINAL_ALLOW_ALL=True
+CORS_ORIGINAL_CREDENTIALS=True
+
+CORS_ALLOW_METHOD = (
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+)
+
+CORS_ALLOW_HEADERS = (
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+)
+
+APPEND_SLASH = False #<- / 관련 에러 제거
