@@ -14,10 +14,10 @@ player_name = input("플레이어 이름: ")
 town = intro.getTownName(background, genre, player_name)
 # 마을 배경 설명
 # 조력자 NPC 생성
-PNPC_name = npc.getProtaNPCName(background, mood)
+PNPC_name = npc.getProtaNPCName(background, genre)
 PNPC_info = npc.getProtaNPCInfo(town, PNPC_name)
 #적대자 NPC 생성
-ANPC_name = npc.getAntaNPCName(background, mood)
+ANPC_name = npc.getAntaNPCName(background, genre)
 ANPC_info = npc.getAntaNPCInfo(town, ANPC_name)
 town_detail = intro.getTownBackground(town, background, genre)
 # 게임 목표 설정
@@ -36,7 +36,7 @@ system_intro = c.SYSTEM_INTRO
 query = "마을 이름은 " + town + "이고, 플레이어 이름은 " + player_name + "이야. 조력자 NPC 이름은 " + \
     PNPC_name + "이고," + PNPC_name + "은 " + PNPC_info + "처럼 행동해야 해. 적대자 NPC 이름은 " + \
     ANPC_name + "이고," + ANPC_name + "은 " + ANPC_info + "처럼 행동해야 해"
-query += background + " 배경의 " + mood + " 분위기의 TRPG 스크립트 생성"
+query += background + " 배경의 " + genre + " 분위기의 TRPG 스크립트 생성"
 
 messages = [
     {"role": "system", "content": system_intro},
