@@ -102,7 +102,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'inkspire',
-        'USER' : 'gongryong',
+        'USER' : 'root',
         'PASSWORD' : PW,
         'HOST' : 'localhost',
         'PORT' : '3306',
