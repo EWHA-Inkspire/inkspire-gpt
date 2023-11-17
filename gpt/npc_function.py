@@ -1,9 +1,9 @@
-from gpt_function import callGPT
+from .gpt_function import callGPT
 
 # 조력자 이름 생성
-def getProtaNPCName(background, mood):
+def getProtaNPCName(background, genre):
     npc_setting = "너는 조력자 NPC 캐릭터의 이름을 한 단어로 출력해야 해."
-    query = background + " 배경의 " + mood + "분위기에 어울리는 조력자 NPC 이름 1개를 출력해줘"
+    query = background + " 배경의 " + genre + "분위기에 어울리는 조력자 NPC 이름 1개를 출력해줘"
 
     messages = [
         {"role": "system", "content": npc_setting},
@@ -34,9 +34,9 @@ def getProtaNPCInfo(town, PNPC_name):
     return PNPC_info
 
 # 적대자 NPC 이름 생성
-def getAntaNPCName(background, mood):
+def getAntaNPCName(background, genre):
     npc_setting = "너는 적대자 NPC 캐릭터의 이름을 한 단어로 출력해야 해."
-    query = background + " 배경의 " + mood + "분위기에 어울리는 적대자 NPC 이름 1개를 출력해줘"
+    query = background + " 배경의 " + genre + "분위기에 어울리는 적대자 NPC 이름 1개를 출력해줘"
 
     messages = [
         {"role": "system", "content": npc_setting},

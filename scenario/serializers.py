@@ -19,7 +19,7 @@ class GptSerializer(serializers.ModelSerializer):
         model = Gpt
         fields = ['gpt_id', 'role', 'query']
 
-# 스크립트 세부 정보 - 스크립트 내용, 목표 + GPT 대화 내용도?
+# 스크립트 세부 정보 - 스크립트 내용, 목표
 class ScriptDetailSerializer(serializers.ModelSerializer):
     # 스크립트가 지닌 목표 정보
     goals = GoalSerializer(many=True, read_only=True)
