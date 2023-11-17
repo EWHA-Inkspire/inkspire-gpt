@@ -7,4 +7,5 @@ urlpatterns = [
     path('script/<int:pk>/goal', GoalListView.as_view()),
     path('script/<int:pk>/goal/<int:goal_pk>', GoalDetailView.as_view()),
     path('script/<int:pk>/chat', GptView.as_view()),
+    path('script/<int:pk>/npc', NpcView.as_view()),
 ]
