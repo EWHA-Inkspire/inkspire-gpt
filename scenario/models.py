@@ -41,12 +41,6 @@ class Goal(models.Model):
 
 # GPT 모델
 class Gpt(models.Model):
-    ROLE_CHOICES = (
-        ('system', 'system'),
-        ('assistant', 'assistant'),
-        ('user', 'user'),
-    )
-        
     # gpt_id : 자동 생성 (PK)
     gpt_id = models.BigAutoField(primary_key=True)
     
@@ -54,7 +48,7 @@ class Gpt(models.Model):
     script = models.ForeignKey(Script, related_name='gpts', on_delete=models.CASCADE, db_column="script_id")
     
     # 역할
-    role = models.CharField(choices=ROLE_CHOICES, max_length=10, null=False, blank=False)
+    role = models.CharField(default='', max_length=10, null=False, blank=False)
     # 쿼리
     query = models.TextField(default='', null=True)
     
@@ -69,4 +63,11 @@ class Npc(models.Model):
     # 외래키 지정 (Script - Gpt -> 1 : N 관계)
     script = models.ForeignKey(Script, related_name='npcs', on_delete=models.CASCADE, db_column="script_id")
     
-    # 다른 필드값?
+    # npc 이름
+    name = models.CharField(default='', max_length=300, null=False, blank=False)
+    # 역할 (prota or anta)
+    role = models.CharField(default='', max_length=10, null=False, blank=False)
+    # 정보
+    info = models.TextField(default='',null=False, blank=False)
+    def __str__(self):
+        return self.name
