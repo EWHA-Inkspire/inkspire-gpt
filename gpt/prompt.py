@@ -13,21 +13,22 @@ player_name = input("플레이어 이름: ")
 # 마을 이름 생성
 town = intro.getTownName(background, genre, player_name)
 # 마을 배경 설명
+town_detail = intro.getTownBackground(town, background, genre)
 # 조력자 NPC 생성
 PNPC_name = npc.getProtaNPCName(background, genre)
+print("gpt done>> Pnpc")
 PNPC_info = npc.getProtaNPCInfo(town, PNPC_name)
+print("gpt done>> Pnpc:desc")
 #적대자 NPC 생성
 ANPC_name = npc.getAntaNPCName(background, genre)
+print("gpt done>> Anpc")
 ANPC_info = npc.getAntaNPCInfo(town, ANPC_name)
-town_detail = intro.getTownBackground(town, background, genre)
+print("gpt done>> Anpc:desc")
 # 게임 목표 설정
-game_objective, game_objective_summary = obj.setGameObjective(town=town, town_detail=town_detail,genre=genre,background=background)
-game_objective_done = []
-for obj in game_objective:  # 게임 목표 달성도 초기화
-    game_objective_done.append(False)
-# NPC 생성
-#NPC_name = npc.getNPCName(background, genre)
-#NPC_info = npc.getNPCInfo(town, NPC_name)
+final_obj, final_summ, final_req = obj.setFinalObjective(town=town, town_detail=town_detail,genre=genre,background=background)
+# 챕터 0 생성
+chapter_num = 0
+chapter_type, chapter_obj, chapter_summ, chapter_req, chapter_etc = obj.setChapterObjective(chapter_num, [], final_obj, final_summ,town, town_detail, genre, background)
 
 # 2. 게임 시작
 # 시스템 설정 - 데이터 적재용
@@ -36,6 +37,8 @@ system_intro = c.SYSTEM_INTRO
 query = "마을 이름은 " + town + "이고, 플레이어 이름은 " + player_name + "이야. 조력자 NPC 이름은 " + \
     PNPC_name + "이고," + PNPC_name + "은 " + PNPC_info + "처럼 행동해야 해. 적대자 NPC 이름은 " + \
     ANPC_name + "이고," + ANPC_name + "은 " + ANPC_info + "처럼 행동해야 해"
+query+= "이 챕터는 스토리 플롯 단계 중 "+c.story_plot_title[chapter_num]+"이며 이 단계에서는"+c.story_plot[c.story_plot_title[chapter_num]]
+query+= "이 게임의 최종 목표는 " + final_obj+final_summ + "이고 현재 챕터의 목표는 " + chapter_obj + chapter_summ + "이야."
 query += background + " 배경의 " + genre + " 분위기의 TRPG 스크립트 생성"
 
 messages = [
@@ -43,15 +46,12 @@ messages = [
     {"role": "user", "content": query}
 ]
 
-final_objective = 0
-curr_objective = 1
 
-
-# 중간 목표 달성 여부 체크
-system_objective_checker = '''당신은 입력된 스크립트 내용에서 주어진 게임의 목표 달성 여부를 확인하는 objective checker이다. 
-출력은 오로지 "True" 혹은 "False" 로만 한다. 
-현재 플레이어의 목표는 '''+game_objective[curr_objective]+'''이고 목표에 대한 설명은 다음과 같다.
-'''+game_objective_summary[curr_objective]
+# 챕터 목표 달성 여부 체크
+# system_objective_checker = '''당신은 입력된 스크립트 내용에서 주어진 게임의 목표 달성 여부를 확인하는 objective checker이다. 
+# 출력은 오로지 "True" 혹은 "False" 로만 한다. 
+# 현재 플레이어의 목표는 '''+game_objective[curr_objective]+'''이고 목표에 대한 설명은 다음과 같다.
+# '''+game_objective_summary[curr_objective]
 
 
 system_play = c.SYSTEM_PLAY
@@ -72,22 +72,22 @@ while (True):
     )
 
     # 목표 달성 여부 체크
-    messages_objective = [
-        {"role": "system", "content": system_objective_checker},
-    ]
+    # messages_objective = [
+    #     {"role": "system", "content": system_objective_checker},
+    # ]
     
-    messages_objective.append(messages[len(messages)-1])
+    # messages_objective.append(messages[len(messages)-1])
         
-    print("현재 목표:"+str(curr_objective)+"\n"+game_objective[curr_objective]+"\n목표 달성 여부:")
-    response = gpt.callGPT(messages=messages_objective,stream=True)
+    # print("현재 목표:"+str(curr_objective)+"\n"+game_objective[curr_objective]+"\n목표 달성 여부:")
+    # response = gpt.callGPT(messages=messages_objective,stream=True)
 
-    if(response == "True"):
-        if(curr_objective<len(game_objective)-1):
-            curr_objective+=1
-        elif(curr_objective==0):
-            print("게임 종료")
-        elif(curr_objective==4):
-            curr_objective = 0
+    # if(response == "True"):
+    #     if(curr_objective<len(game_objective)-1):
+    #         curr_objective+=1
+    #     elif(curr_objective==0):
+    #         print("게임 종료")
+    #     elif(curr_objective==4):
+    #         curr_objective = 0
 
     # 플레이어 선택지 입력
     player_choice = input("Player: ")

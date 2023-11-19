@@ -29,4 +29,4 @@ def getTownBackground(town, background, mood):
         {"role": "user", "content": query}
     ]
 
-    callGPT(messages=messages, stream=True)
+    return callGPT(messages=messages, stream=True)
