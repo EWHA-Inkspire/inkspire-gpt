@@ -7,9 +7,8 @@ from rest_framework.decorators import authentication_classes, permission_classes
 from rest_framework.authentication import TokenAuthentication
 
 from .views import *
-from .models import *
-from .serializers import *
-from account.models import *
+from .serializers import GoalSerializer
+from account.models import User
 from account.views import get_token_key, get_user_id_from_token
 from gpt.intro_function import *
 from gpt.objective_function import *
@@ -19,7 +18,7 @@ from gpt.objective_function import *
 # chapter가 0인 경우 목표 전체 조회
 # chapter 1-5 : 해당 챕터 목표 조회
 class GoalListView(views.APIView):
-    serilalizer_class = GoalSerializer
+    serializer_class = GoalSerializer
     
     @authentication_classes([TokenAuthentication])
     @permission_classes([IsAuthenticated])
@@ -53,7 +52,7 @@ class GoalListView(views.APIView):
                     goal['chapter'] = 5
                 else:
                     goal['chapter'] = i
-                    goal['req_type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(i, "", f_title, f_content, town, town_detail, genre, background)
+                    goal['req_type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(i-1, "", f_title, f_content, town, town_detail, genre, background)
                 
                 goals.append(goal)
                 
@@ -65,11 +64,11 @@ class GoalListView(views.APIView):
             for gpt in gpts:
                 prev_summ += gpt['query'] + "\n"
             goal['chapter'] = chapter
-            goal['type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(chapter, prev_summ, f_title, f_content, town, town_detail, genre, background)
+            goal['type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(chapter-1, prev_summ, f_title, f_content, town, town_detail, genre, background)
             goals.append(goal)
         
         # 목표 정보 저장
-        serializer = self.serilalizer_class(data=goals, many=True)
+        serializer = self.serializer_class(data=goals, many=True)
         if serializer.is_valid(raise_exception=True):
             serializer.save(script=script)
             return Response({
@@ -99,7 +98,7 @@ class GoalListView(views.APIView):
         else:
             goals = Goal.objects.filter(script=pk).filter(chapter=chapter)
             
-        serializer = self.serilalizer_class(goals, many=True)
+        serializer = self.serializer_class(goals, many=True)
         
         return Response({
             'message' : '목표 상세 조회 성공',
@@ -113,7 +112,7 @@ class GoalListView(views.APIView):
             }, status=HTTP_400_BAD_REQUEST)
         
         goal = Goal.objects.filter(script=pk).filter(chapter=chapter)
-        serializer = self.serilalizer_class(data=request.data, instance=goal, partial=True)
+        serializer = self.serializer_class(data=request.data, instance=goal, partial=True)
         
         if serializer.is_valid():
             serializer.save()

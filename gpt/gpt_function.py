@@ -23,7 +23,7 @@ def printStream(response):
 
 # GPT API 호출 함수 & 스트림 형태 출력
 def callGPT(messages, stream):
-    model = "gpt-4-1106-preview"
+    model = "gpt-3.5-turbo"
 
     response = openai.ChatCompletion.create(
         model=model,
@@ -35,15 +35,16 @@ def callGPT(messages, stream):
     if (stream):
         return printStream(response=response)
 
-    return response
+    return response['choices'][0]['message']['content']
 
 # 응답 요약
 def summary(response):
-    query = response + " 요약"
+    query = response + " 짧게 요약해 줘"
     messages = [
+        {"role": "system", "content": "너는 문장이 들어오면 그것을 짧게 요약한 것만을 답해야 해."},
         {"role": "user", "content": query}
     ]
 
     response = callGPT(messages=messages, stream=False)
 
-    return response['choices'][0]['message']['content']
+    return response

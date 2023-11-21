@@ -17,7 +17,7 @@ class GoalSerializer(serializers.ModelSerializer):
 class GptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gpt
-        fields = ['gpt_id', 'chapter', 'role', 'query']
+        fields = ['gpt_id', 'chapter', 'role', 'content', 'summary']
 
 # npc 정보 - 이름, 역할, 직업, 말투, 성격
 class NpcSerializer(serializers.ModelSerializer):

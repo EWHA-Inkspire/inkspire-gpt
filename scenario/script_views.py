@@ -15,7 +15,7 @@ from gpt.intro_function import *
 
 # 스크립트 정보 저장 뷰 (pk : character_id)
 class ScriptView(views.APIView):
-    serilalizer_class = ScriptSerializer
+    serializer_class = ScriptSerializer
     
     @authentication_classes([TokenAuthentication])
     @permission_classes([IsAuthenticated])
@@ -30,15 +30,14 @@ class ScriptView(views.APIView):
             }, status=HTTP_400_BAD_REQUEST)
         
         character = get_object_or_404(Character, pk=pk)    
-        serializer = self.serilalizer_class(data=request.data)
+        serializer = self.serializer_class(data=request.data)
             
         if serializer.is_valid(raise_exception=True):
             # 입력받은 배경 및 장르를 토대로 마을 이름 & 배경 생성
             background = serializer.validated_data.get('background')
             genre = serializer.validated_data.get('genre')
-            player_name = character.name
             
-            town_name = getTownName(background=background, genre=genre, player_name=player_name)
+            town_name = getTownName(background=background, genre=genre)
             town_detail = getTownBackground(town=town_name, background=background, genre=genre)
             
             # 시리얼라이저에 정보 추가
@@ -59,7 +58,7 @@ class ScriptView(views.APIView):
 
 # 스크립트 상세 조회 뷰 (pk : script_id)
 class ScriptListView(views.APIView):
-    serilalizer_class = ScriptDetailSerializer
+    serializer_class = ScriptDetailSerializer
     
     @authentication_classes([TokenAuthentication])
     @permission_classes([IsAuthenticated])
@@ -74,7 +73,7 @@ class ScriptListView(views.APIView):
                 }, status=HTTP_400_BAD_REQUEST)
         
         script = get_object_or_404(Script, pk=pk)
-        serializer = self.serilalizer_class(script)
+        serializer = self.serializer_class(script)
         
         return Response({
             'message' : '스크립트 상세 조회 성공',
