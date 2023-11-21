@@ -1,5 +1,5 @@
-import gpt_function as gpt
-import const as c
+from .gpt_function import callGPT
+import gpt.const as c
 import json
 
 # 게임 최종 목표 설정 함수
@@ -13,7 +13,7 @@ def setFinalObjective(town,town_detail,genre,background):
     ]
     
     print(">> Call GPT: game objective")
-    response = gpt.callGPT(messages=messages, stream=True)
+    response = callGPT(messages=messages, stream=True)
     print(">> GPT Done: game objective")
 
     # 문자열 분리 기준자-> ":"
@@ -41,7 +41,7 @@ def setChapterObjective(chapter_num, prev_summary, final_obj, final_summ, town, 
     ]
     
     print(">> Call GPT: chapter objective")
-    response = gpt.callGPT(messages=messages, stream=True)
+    response = callGPT(messages=messages, stream=True)
     print(">> GPT Done: chapter objective")
 
     # 문자열 분리 기준자-> ":"
