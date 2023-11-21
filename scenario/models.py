@@ -29,8 +29,8 @@ class Goal(models.Model):
     # 외래키 지정 (Script - Goal -> 1 : N 관계)
     script = models.ForeignKey(Script, related_name="goals", on_delete=models.CASCADE, db_column="script_id")
     
-    # 최종 목표 여부
-    final = models.BooleanField(default=False)
+    # 속한 챕터 (총 5개의 챕터로 시나리오 구분)
+    chapter = models.IntegerField(null=False, blank=False)
     # 목표 내용
     content = models.TextField(default='', null=False, blank=False)
     # 목표 달성 여부
@@ -57,10 +57,6 @@ class Gpt(models.Model):
 
 # NPC 모델
 class Npc(models.Model):
-    ROLE_CHOICES = (
-        ('prota', 'prota'),
-        ('anta', 'anta'),
-    )
     # npc_id : 자동 생성 (PK)
     npc_id = models.BigAutoField(primary_key=True)
     
@@ -68,12 +64,10 @@ class Npc(models.Model):
     script = models.ForeignKey(Script, related_name='npcs', on_delete=models.CASCADE, db_column="script_id")
     
     # npc 이름
-    name = models.CharField(default='', max_length=100, null=False, blank=False)
-    # 역할
-    role = models.CharField(default='', choices=ROLE_CHOICES, max_length=10, null=False, blank=False)
-    # 직업
-    job = models.CharField(default='', max_length=100, null=False, blank=False)
-    
+    name = models.CharField(default='', max_length=300, null=False, blank=False)
+    # 역할 (prota or anta)
+    role = models.CharField(default='', max_length=10, null=False, blank=False)
+    # 정보
+    info = models.TextField(default='',null=False, blank=False)
     def __str__(self):
         return self.name
-    

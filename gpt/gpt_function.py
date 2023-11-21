@@ -23,13 +23,13 @@ def printStream(response):
 
 # GPT API 호출 함수 & 스트림 형태 출력
 def callGPT(messages, stream):
-    model = "gpt-3.5-turbo"
+    model = "gpt-4-1106-preview"
 
     response = openai.ChatCompletion.create(
         model=model,
         messages=messages,
         stream=stream,
-        temperature=0.5,  # 랜덤성 조절
+        temperature=0.8,  # 랜덤성 조절
     )
 
     if (stream):

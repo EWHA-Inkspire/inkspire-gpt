@@ -11,6 +11,7 @@ from .serializers import *
 from account.models import *
 from account.views import get_token_key, get_user_id_from_token
 from gpt.intro_function import *
+from gpt.npc_function import *
 
 # 권한 확인 함수
 def CheckAuth(user, model_name, pk):
@@ -68,10 +69,15 @@ class ScriptView(views.APIView):
 # 스크립트 상세 조회 뷰 (pk : script_id)
 class ScriptListView(views.APIView):
     serilalizer_class = ScriptDetailSerializer
-    permission_classes = [IsAuthenticated]
     
+    @authentication_classes([TokenAuthentication])
+    @permission_classes([IsAuthenticated])
     def get(self, request, pk):
-        if CheckAuth(request, Script, pk):
+        auth_token = get_token_key(request=request)
+        user_id = get_user_id_from_token(token_key=auth_token)
+        user = get_object_or_404(User, pk=user_id)
+        
+        if CheckAuth(user=user, model_name=Script, pk=pk):
             return Response({
                     'message' : '스크립트 조회 권한이 없습니다.'
                 }, status=HTTP_400_BAD_REQUEST)
@@ -84,7 +90,7 @@ class ScriptListView(views.APIView):
             'data' : serializer.data
         }, status=HTTP_200_OK)
 
-# 목표 리스트 뷰 (pk : script_id)
+# 목표 생성 뷰 (pk : script_id)
 class GoalListView(views.APIView):
     serilalizer_class = GoalSerializer
     permission_classes = [IsAuthenticated]
@@ -181,5 +187,72 @@ class GptView(views.APIView):
         
         return Response({
             'message' : 'GPT 조회 성공',
+            'data' : serializer.data
+        }, status=HTTP_200_OK)
+
+# npc 생성 (pk : script_id)
+class NpcView(views.APIView):
+    serilalizer_class = NpcSerializer
+    
+    @authentication_classes([TokenAuthentication])
+    @permission_classes([IsAuthenticated])
+    def post(self, request, pk):
+        auth_token = get_token_key(request=request)
+        user_id = get_user_id_from_token(token_key=auth_token)
+        user = get_object_or_404(User, pk=user_id)
+        
+        if CheckAuth(user=user, model_name=Character, pk=pk):
+            return Response({
+                'message' : 'npc 생성 권한이 없습니다.'
+            }, status=HTTP_400_BAD_REQUEST)
+            
+        script = get_object_or_404(Script, pk=pk)
+        background = script.background
+        genre = script.genre
+        town = script.town
+        
+        # 첫 번째 NPC 저장 (조력자)
+        serializer = self.serilalizer_class(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            # script 정보 토대로 npc 생성 (조력자)
+            name = getProtaNPCName(background=background, genre=genre)
+            info = getProtaNPCInfo(town=town, PNPC_name=name)
+
+            # 저장
+            serializer.validated_data['name'] = name
+            serializer.validated_data['role'] = "prota"
+            serializer.validated_data['info'] = info
+            serializer.save(script=script)
+
+            # 두 번째 NPC 저장 (적대자)
+            new_serializer = self.serilalizer_class(data=request.data)  # 새로운 serializer 생성
+
+            if new_serializer.is_valid(raise_exception=True):
+                name = getAntaNPCName(background=background, genre=genre)
+                info = getAntaNPCInfo(town=town, ANPC_name=name)
+
+                # 저장
+                new_serializer.validated_data['name'] = name
+                new_serializer.validated_data['role'] = "anta"
+                new_serializer.validated_data['info'] = info
+                new_serializer.save(script=script)
+
+            return Response({
+                'message' : 'NPC(조력자 / 적대자) 생성 성공',
+                'data' : serializer.data
+            }, status=HTTP_200_OK)
+        
+        else:
+            return Response({
+                'message' : 'NPC(조력자 / 적대자) 생성 실패',
+                'data' : serializer.errors
+            }, status=HTTP_400_BAD_REQUEST)
+
+    def get(self, request, pk):
+        npcs = Npc.objects.filter(script=pk)
+        serializer = self.serilalizer_class(npcs, many=True)
+        
+        return Response({
+            'message' : 'NPC 조회 성공',
             'data' : serializer.data
         }, status=HTTP_200_OK)
