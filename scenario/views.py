@@ -90,7 +90,7 @@ class ScriptListView(views.APIView):
             'data' : serializer.data
         }, status=HTTP_200_OK)
 
-# 목표 리스트 뷰 (pk : script_id)
+# 목표 생성 뷰 (pk : script_id)
 class GoalListView(views.APIView):
     serilalizer_class = GoalSerializer
     permission_classes = [IsAuthenticated]

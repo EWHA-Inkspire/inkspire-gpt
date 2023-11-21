@@ -21,7 +21,7 @@ def getTownName(background, genre, player_name):
 # 배경에 대한 설명
 def getTownBackground(town, background, genre):
     town_setting = "사용자가 시나리오 속 캐릭터라고 상정하고 " + background + \
-        " 배경의 " + genre + " 분위기의 TRPG 시나리오를 진행해줘."
+        " 배경과 " + genre + " 분위기에 어울리는 마을 이름을 사용자가 입력하면 그 배경에 대해 설명해 줘."
     query = town + "의 배경에 대해 자세히 설명해줘"
 
     messages = [

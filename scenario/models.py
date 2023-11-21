@@ -29,8 +29,8 @@ class Goal(models.Model):
     # 외래키 지정 (Script - Goal -> 1 : N 관계)
     script = models.ForeignKey(Script, related_name="goals", on_delete=models.CASCADE, db_column="script_id")
     
-    # 최종 목표 여부
-    final = models.BooleanField(default=False)
+    # 속한 챕터 (총 5개의 챕터로 시나리오 구분)
+    chapter = models.IntegerField(null=False, blank=False)
     # 목표 내용
     content = models.TextField(default='', null=False, blank=False)
     # 목표 달성 여부
