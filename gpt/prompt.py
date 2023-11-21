@@ -25,10 +25,11 @@ print("gpt done>> Anpc")
 ANPC_info = npc.getAntaNPCInfo(town, ANPC_name)
 print("gpt done>> Anpc:desc")
 # 게임 목표 설정
-final_obj, final_summ, final_req = obj.setFinalObjective(town=town, town_detail=town_detail,genre=genre,background=background)
+final_title, final_content, final_req = obj.setFinalObjective(town=town, town_detail=town_detail,genre=genre,background=background)
+
 # 챕터 0 생성
 chapter_num = 0
-chapter_type, chapter_obj, chapter_summ, chapter_req, chapter_etc = obj.setChapterObjective(chapter_num, [], final_obj, final_summ,town, town_detail, genre, background)
+chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = obj.setChapterObjective(chapter_num, [], final_title, final_content,town, town_detail, genre, background)
 
 # 2. 게임 시작
 # 시스템 설정 - 데이터 적재용
@@ -38,7 +39,7 @@ query = "마을 이름은 " + town + "이고, 플레이어 이름은 " + player_
     PNPC_name + "이고," + PNPC_name + "은 " + PNPC_info + "처럼 행동해야 해. 적대자 NPC 이름은 " + \
     ANPC_name + "이고," + ANPC_name + "은 " + ANPC_info + "처럼 행동해야 해"
 query+= "이 챕터는 스토리 플롯 단계 중 "+c.story_plot_title[chapter_num]+"이며 이 단계에서는"+c.story_plot[c.story_plot_title[chapter_num]]
-query+= "이 게임의 최종 목표는 " + final_obj+final_summ + "이고 현재 챕터의 목표는 " + chapter_obj + chapter_summ + "이야."
+query+= "이 게임의 최종 목표는 " + final_title + final_content + "이고 현재 챕터의 목표는 " + chapter_title + chapter_content + "이야."
 query += background + " 배경의 " + genre + " 분위기의 TRPG 스크립트 생성"
 
 messages = [
