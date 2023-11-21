@@ -1,7 +1,7 @@
 from .gpt_function import callGPT
 
 # 배경, 분위기에 맞는 마을 이름 생성
-def getTownName(background, genre, player_name):
+def getTownName(background, genre):
     # 마을 이름 출력을 위한 세팅 & 쿼리
     town_setting = "너는 항상 한 단어로만 답을 출력해야해"
     query = background + " 배경의 " + genre + "분위기에 어울리는 마을 이름 1개를 출력해줘"
@@ -11,10 +11,7 @@ def getTownName(background, genre, player_name):
         {"role": "user", "content": query}
     ]
 
-    response = callGPT(messages=messages, stream=False)
-
-    town = response['choices'][0]['message']['content']
-    print("안녕하세요 " + player_name + "님. 지금부터 당신을 " + town + "에 초대합니다.\n")
+    town = callGPT(messages=messages, stream=False)
 
     return town
 
@@ -29,7 +26,5 @@ def getTownBackground(town, background, genre):
         {"role": "user", "content": query}
     ]
 
-    response = callGPT(messages=messages, stream=False)
-    
-    town_detail = response['choices'][0]['message']['content']
+    town_detail = callGPT(messages=messages, stream=False)
     return town_detail

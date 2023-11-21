@@ -60,8 +60,10 @@ class Gpt(models.Model):
     chapter = models.IntegerField(default=0)
     # 역할
     role = models.CharField(default='', max_length=10, null=False, blank=False)
-    # 쿼리
-    query = models.TextField(default='', null=True)
+    # 내용
+    content = models.TextField(default='', null=True)
+    # 요약
+    summary = models.TextField(default='', null=False, blank=False)
     
     def __str__(self):
         return self.query

@@ -15,7 +15,7 @@ from gpt.npc_function import *
 
 # npc 생성 (pk : script_id)
 class NpcView(views.APIView):
-    serilalizer_class = NpcSerializer
+    serializer_class = NpcSerializer
     
     @authentication_classes([TokenAuthentication])
     @permission_classes([IsAuthenticated])
@@ -54,7 +54,7 @@ class NpcView(views.APIView):
         print(npcs)
         
         # NPC 저장
-        serializer = self.serilalizer_class(data=npcs, many=True)
+        serializer = self.serializer_class(data=npcs, many=True)
         
         if serializer.is_valid(raise_exception=True): 
             serializer.save(script=script)
@@ -70,7 +70,7 @@ class NpcView(views.APIView):
 
     def get(self, request, pk):
         npcs = Npc.objects.filter(script=pk)
-        serializer = self.serilalizer_class(npcs, many=True)
+        serializer = self.serializer_class(npcs, many=True)
         
         return Response({
             'message' : 'NPC 조회 성공',

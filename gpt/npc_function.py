@@ -10,9 +10,7 @@ def getProtaNPCName(background, genre):
         {"role": "user", "content": query}
     ]
 
-    response = callGPT(messages=messages, stream=False)
-
-    PNPC_name = response['choices'][0]['message']['content']
+    PNPC_name = callGPT(messages=messages, stream=False)
 
     return PNPC_name
 
@@ -27,9 +25,7 @@ def getProtaNPCInfo(town, PNPC_name):
         {"role": "user", "content": query}
     ]
 
-    response = callGPT(messages=messages, stream=False)
-
-    PNPC_info = response['choices'][0]['message']['content']
+    PNPC_info = callGPT(messages=messages, stream=False)
 
     return PNPC_info
 
@@ -43,9 +39,7 @@ def getAntaNPCName(background, genre):
         {"role": "user", "content": query}
     ]
 
-    response = callGPT(messages=messages, stream=False)
-
-    ANPC_name = response['choices'][0]['message']['content']
+    ANPC_name = callGPT(messages=messages, stream=False)
 
     return ANPC_name
 
@@ -60,8 +54,6 @@ def getAntaNPCInfo(town, ANPC_name):
         {"role": "user", "content": query}
     ]
 
-    response = callGPT(messages=messages, stream=False)
-
-    ANPC_info = response['choices'][0]['message']['content']
+    ANPC_info = callGPT(messages=messages, stream=False)
 
     return ANPC_info
