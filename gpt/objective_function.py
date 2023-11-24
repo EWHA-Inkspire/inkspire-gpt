@@ -1,5 +1,5 @@
-import gpt_function as gpt
-import const as c
+from .gpt_function import callGPT
+import gpt.const as c
 import json
 
 # 게임 최종 목표 설정 함수
@@ -13,7 +13,7 @@ def setFinalObjective(town,town_detail,genre,background):
     ]
     
     print(">> Call GPT: game objective")
-    response = gpt.callGPT(messages=messages, stream=True)
+    response = callGPT(messages=messages, stream=True)
     print(">> GPT Done: game objective")
 
     # 문자열 분리 기준자-> ":"
@@ -23,16 +23,16 @@ def setFinalObjective(town,town_detail,genre,background):
     for k in response_arr:
         k = k.strip()
 
-    final_obj = response_arr[1]
-    final_summ = response_arr[3]
+    final_title = response_arr[1]
+    final_content = response_arr[3]
     final_req = response_arr[5]
 
-    return final_obj, final_summ, final_req
+    return final_title, final_content, final_req
 
 
 # 챕터 목표 설정 함수
-def setChapterObjective(chapter_num, prev_summary, final_obj, final_summ, town, town_detail, genre, background):
-    c.setVarSYSTEM_CHAPTER(chapter_num, prev_summary, final_obj, final_summ, town_detail, background)
+def setChapterObjective(chapter_num, prev_summary, final_title, final_content, town, town_detail, genre, background):
+    c.setVarSYSTEM_CHAPTER(chapter_num, prev_summary, final_title, final_content, town_detail, background)
     query = town+"이라는 이름의 마을에서 진행되는 게임의 "+ genre +"장르에 어울리는 챕터 목표 생성"
 
     messages = [
@@ -41,7 +41,7 @@ def setChapterObjective(chapter_num, prev_summary, final_obj, final_summ, town, 
     ]
     
     print(">> Call GPT: chapter objective")
-    response = gpt.callGPT(messages=messages, stream=True)
+    response = callGPT(messages=messages, stream=True)
     print(">> GPT Done: chapter objective")
 
     # 문자열 분리 기준자-> ":"
@@ -52,8 +52,8 @@ def setChapterObjective(chapter_num, prev_summary, final_obj, final_summ, town, 
         k = k.strip()
 
     chapter_type = int(response_arr[1])
-    chapter_obj = response_arr[3]
-    chapter_summ = response_arr[5]
+    chapter_title = response_arr[3]
+    chapter_content = response_arr[5]
     chapter_req = response_arr[7]
     chapter_etc = response_arr[9]
 
@@ -69,11 +69,7 @@ def setChapterObjective(chapter_num, prev_summary, final_obj, final_summ, town, 
     주사위 성공: *주사위 성공 시 진행될 스토리 요약*
     주사위 실패: *주사위 실패 시 진행될 스토리 요약*'''
 
-    return chapter_type, chapter_obj, chapter_summ,chapter_req, chapter_etc
-    
-    
-def chapterPlay():
-    chapter_setting = ["시작: 이전 챕터 summary 들어가야함","시련: 주사위 판정","해결: 목표조건 달성"]
+    return chapter_type, chapter_title, chapter_content,chapter_req, chapter_etc
 
 
 # Json 파싱함수

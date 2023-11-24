@@ -30,9 +30,18 @@ class Goal(models.Model):
     script = models.ForeignKey(Script, related_name="goals", on_delete=models.CASCADE, db_column="script_id")
     
     # 속한 챕터 (총 5개의 챕터로 시나리오 구분)
-    chapter = models.IntegerField(null=False, blank=False)
+    chapter = models.IntegerField(default=0)
+    # 목표 제목
+    title = models.TextField(default='', null=False, blank=False)
     # 목표 내용
     content = models.TextField(default='', null=False, blank=False)
+    # 달성 조건
+    require = models.TextField(default='', null=False, blank=False)
+    # 달성 유형
+    req_type = models.IntegerField(default=0)
+    # 비고
+    etc = models.TextField(default='', null=True, blank=True)
+    
     # 목표 달성 여부
     finished = models.BooleanField(default=False)
     
@@ -46,11 +55,15 @@ class Gpt(models.Model):
     
     # 외래키 지정 (Script - Gpt -> 1 : N 관계)
     script = models.ForeignKey(Script, related_name='gpts', on_delete=models.CASCADE, db_column="script_id")
-    
+   
+    # 속한 챕터 (총 5개의 챕터로 시나리오 구분)
+    chapter = models.IntegerField(default=0)
     # 역할
     role = models.CharField(default='', max_length=10, null=False, blank=False)
-    # 쿼리
-    query = models.TextField(default='', null=True)
+    # 내용
+    content = models.TextField(default='', null=True)
+    # 요약
+    summary = models.TextField(default='', null=False, blank=False)
     
     def __str__(self):
         return self.query

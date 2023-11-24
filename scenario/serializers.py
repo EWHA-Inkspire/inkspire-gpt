@@ -11,13 +11,13 @@ class ScriptSerializer(serializers.ModelSerializer):
 class GoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
-        fields = ['goal_id', 'content', 'final', 'finished']
+        fields = ['goal_id', 'chapter', 'title', 'content', 'require', 'req_type', 'etc', 'finished']
 
 # GPT 정보
 class GptSerializer(serializers.ModelSerializer):
     class Meta:
         model = Gpt
-        fields = ['gpt_id', 'role', 'query']
+        fields = ['gpt_id', 'chapter', 'role', 'content', 'summary']
 
 # npc 정보 - 이름, 역할, 직업, 말투, 성격
 class NpcSerializer(serializers.ModelSerializer):
