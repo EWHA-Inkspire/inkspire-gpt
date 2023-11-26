@@ -1,5 +1,5 @@
-from .gpt_function import callGPT
-import gpt.const as c
+from gpt_function import callGPT
+import const as c
 import json
 
 # 게임 최종 목표 설정 함수
@@ -61,7 +61,7 @@ def setChapterObjective(chapter_num, prev_summary, final_title, final_content, t
     '''챕터목표유형: *챕터 목표 유형을 숫자만 표시*
     챕터목표: *챕터 목표*
     챕터목표 설명: *챕터 목표 설명*
-    달성 조건: *구체적인 달성 조건* 
+    달성 조건: *구체적인 달성 조건 아이템 습득이 목표일 때, 구체적인 아이템 이름이 포함된다.* 
     비고: *챕터 유형에 맞는 비고 생성*
     
     주사위 이벤트 등장 조건:*주사위 판정 등장 조건*
@@ -70,6 +70,31 @@ def setChapterObjective(chapter_num, prev_summary, final_title, final_content, t
     주사위 실패: *주사위 실패 시 진행될 스토리 요약*'''
 
     return chapter_type, chapter_title, chapter_content,chapter_req, chapter_etc
+
+
+# 목표 달성 함수
+def checkObjective(chapter_title, chapter_content, chapter_req, turn_summary):
+    query = "현재 챕터 목표: "+chapter_title+"\n목표 설명: "+chapter_content+"\n달성 조건: "+chapter_req
+    messages = [
+        {"role": "system", "content": c.SYSTEM_OBJECTIVE_CHECKER},
+        {"role": "user", "content": query}
+    ]
+    print(">> Call GPT: objective checker")
+    response = callGPT(messages=messages, stream=True)
+    print(">> GPT Done: objective checker")
+
+    if response == "True":
+        return True
+    elif response == "False":
+        return False
+    print(">> ERROR obective checker: Wrong Return Format")
+    return False
+
+
+# 주사위 이벤트 발생 함수
+def setDiceEvent():
+
+    return
 
 
 # Json 파싱함수

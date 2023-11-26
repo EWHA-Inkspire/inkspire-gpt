@@ -11,7 +11,7 @@ genre = input("장르: ")
 player_name = input("플레이어 이름: ")
 
 # 마을 이름 생성
-town = intro.getTownName(background, genre, player_name)
+town = intro.getTownName(background, genre)
 # 마을 배경 설명
 town_detail = intro.getTownBackground(town, background, genre)
 # 조력자 NPC 생성
@@ -66,12 +66,15 @@ while (True):
     messages[0] = {"role": "system", "content": system_play}
 
     # 이전 턴 요약 후 저장 => 2개만
-    print("처리중...")
+    print(">> Call GPT: summarizing play data")
     response = gpt.summary(response=response)
     messages.append(
         {"role": "assistant", "content": response}
     )
-
+    obj_check = obj.checkObjective(chapter_title,chapter_content,chapter_req,response)
+    if obj_check:
+        chapter_num += 1
+        chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = obj.setChapterObjective(chapter_num, [], final_title, final_content,town, town_detail, genre, background)
     # 목표 달성 여부 체크
     # messages_objective = [
     #     {"role": "system", "content": system_objective_checker},

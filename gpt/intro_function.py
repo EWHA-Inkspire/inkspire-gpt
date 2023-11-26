@@ -1,4 +1,4 @@
-from .gpt_function import callGPT
+from gpt_function import callGPT
 
 # 배경, 분위기에 맞는 마을 이름 생성
 def getTownName(background, genre):
@@ -11,7 +11,7 @@ def getTownName(background, genre):
         {"role": "user", "content": query}
     ]
 
-    town = callGPT(messages=messages, stream=False)
+    town = callGPT(messages=messages, stream=True)
 
     return town
 
@@ -26,5 +26,5 @@ def getTownBackground(town, background, genre):
         {"role": "user", "content": query}
     ]
 
-    town_detail = callGPT(messages=messages, stream=False)
+    town_detail = callGPT(messages=messages, stream=True)
     return town_detail
