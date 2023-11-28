@@ -11,7 +11,7 @@ genre = input("장르: ")
 player_name = input("플레이어 이름: ")
 
 # 마을 이름 생성
-town = intro.getTownName(background, genre, player_name)
+town = intro.getTownName(background, genre)
 # 마을 배경 설명
 town_detail = intro.getTownBackground(town, background, genre)
 # 조력자 NPC 생성
@@ -19,11 +19,15 @@ PNPC_name = npc.getProtaNPCName(background, genre)
 print("gpt done>> Pnpc")
 PNPC_info = npc.getProtaNPCInfo(town, PNPC_name)
 print("gpt done>> Pnpc:desc")
+print(PNPC_name + "\n")
+print(PNPC_info + "\n")
 #적대자 NPC 생성
 ANPC_name = npc.getAntaNPCName(background, genre)
 print("gpt done>> Anpc")
 ANPC_info = npc.getAntaNPCInfo(town, ANPC_name)
 print("gpt done>> Anpc:desc")
+print(ANPC_name + "\n")
+print(ANPC_info + "\n")
 # 게임 목표 설정
 final_title, final_content, final_req = obj.setFinalObjective(town=town, town_detail=town_detail,genre=genre,background=background)
 
