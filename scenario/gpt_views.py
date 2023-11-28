@@ -1,8 +1,4 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import views
-from rest_framework.status import *
-from rest_framework.response import Response
-
+from .views import *
 from .models import Script, Gpt
 from .serializers import GptSerializer
 from gpt.gpt_function import summary

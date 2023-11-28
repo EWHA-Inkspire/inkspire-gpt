@@ -66,7 +66,7 @@ class Gpt(models.Model):
     summary = models.TextField(default='', null=False, blank=False)
     
     def __str__(self):
-        return self.query
+        return self.content
 
 # NPC 모델
 class Npc(models.Model):
@@ -84,3 +84,19 @@ class Npc(models.Model):
     info = models.TextField(default='',null=False, blank=False)
     def __str__(self):
         return self.name
+
+# 훈련 데이터 세트 모델
+class Train(models.Model):
+    # train_id : 자동 생성 (PK)
+    train_id = models.BigAutoField(primary_key=True)
+    
+    # 외래키 지정 (Script - Gpt -> 1 : N 관계)
+    script = models.ForeignKey(Script, related_name='trains', on_delete=models.CASCADE, db_column="script_id")
+    
+    # 역할 (system, user, assistant)
+    role = models.CharField(default='', max_length=10, null=False, blank=False)
+    # 내용
+    content = models.TextField(default='', null=True)
+    
+    def __str__(self):
+        return self.content
