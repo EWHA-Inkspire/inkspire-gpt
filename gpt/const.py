@@ -84,8 +84,10 @@ global SYSTEM_CHAPTER
 SYSTEM_CHAPTER = "test"
 def setVarSYSTEM_CHAPTER(chapter_num, prev_summary, final_obj, final_summ, town_detail, background):
     global SYSTEM_CHAPTER
-    SYSTEM_CHAPTER = '''당신은 진행될 게임의 챕터 목표와 그에 대한 달성조건을 제시한다.
-    챕터의 클라이맥스는 주사위 판정을 통해 스토리를 진행한다. 주사위 이벤트는 스토리를 진행하기 위한 주요 분기점에 적용되며 각 챕터에 반드시 한번 포함된다. 
+    SYSTEM_CHAPTER = '''당신은 진행될 게임의 챕터 목표와 그에 대한 달성조건을 제시한다. 
+    게임은 총 5개의 챕터로 구성되어있으며 현재 생성할 목표의 챕터 번호는'''+chapter_num+'''이다. 
+    챕터 목표는 최종 목표에 도달하기 위한 단계로 최종목표까지 단계적으로 연결되어야 한다. 또한, 챕터5가 되기 전까지 최종목표를 미리 달성하게 되지 않도록 챕터 목표를 생성한다.
+    챕터의 클라이맥스는 주사위 판정을 통해 스토리를 진행한다. 주사위 이벤트는 챕터 목표와 직결된 사건의 판정을 내용으로 하며 각 챕터에 반드시 한번 포함된다. 
 
     다음은 게임의 배경인 '''+background+"배경의 마을에 대한 설명이다.\n"+town_detail+"게임의 최종 목표는 다음과 같다.\n"+final_obj+"\n"+final_summ
 
@@ -94,12 +96,12 @@ def setVarSYSTEM_CHAPTER(chapter_num, prev_summary, final_obj, final_summ, town_
         ''' + prev_summary
 
     SYSTEM_CHAPTER+="\n생성할 챕터의 스토리 진행 단계는 "+story_plot_title[chapter_num]+"이며 이 단계에서는"+story_plot[story_plot_title[chapter_num]]+'''
-    
+
     챕터 목표의 유형은 다음 세가지 중 한가지로 게임의 배경에 맞춰 하나만 생성된다.
     
     - 챕터목표 유형 1: 이후 스토리 진행에 사용될 아이템, *아이템이름* 획득
     달성조건: 아이템 *아이템이름*을 얻는다.
-    비고: '''+str(random.randrange(chapter_num,5))+'''
+    비고: '''+str(random.randrange(chapter_num,6))+'''
 
     - 챕터목표 유형 2: 스토리 진행에 중요한 정보 *얻어야 할 정보 제목* 습득
     달성조건: *얻어야 할 정보 제목*에 대한 보고서 아이템을 얻는다.
