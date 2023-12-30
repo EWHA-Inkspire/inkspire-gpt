@@ -28,7 +28,7 @@ print("gpt done>> Anpc:desc")
 final_title, final_content, final_req = obj.setFinalObjective(town=town, town_detail=town_detail,genre=genre,background=background)
 
 # 챕터 0 생성
-chapter_num = 0
+chapter_num = 1
 chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = obj.setChapterObjective(chapter_num, [], final_title, final_content,town, town_detail, genre, background)
 
 # 2. 게임 시작
