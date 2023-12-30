@@ -39,9 +39,9 @@ def callGPT(messages, stream):
 
 # 응답 요약
 def summary(response):
-    query = response + " 짧게 요약해 줘"
+    query = response + " 중요 내용 요약해 줘"
     messages = [
-        {"role": "system", "content": "너는 문장이 들어오면 그것을 짧게 요약한 것만을 답해야 해."},
+        {"role": "system", "content": "너는 문장들이 들어오면 그것을 중요한 내용 위주로 요약한 것만을 답해야 해."},
         {"role": "user", "content": query}
     ]
 
