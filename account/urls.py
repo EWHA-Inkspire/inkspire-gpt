@@ -8,6 +8,4 @@ urlpatterns = [
     path('signup', SignUpView.as_view()),
     path('login', LoginView.as_view()),
     path('user/profile', ProfileView.as_view()),
-    # 캐릭터 생성/조회
-    path('character', CharacterView.as_view())
 ]

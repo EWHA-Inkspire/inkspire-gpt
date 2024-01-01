@@ -1,5 +1,5 @@
 from .models import *
-from scenario.serializers import ScriptSerializer
+from character.serializers import CharacterSerializer
 from rest_framework import serializers
 
 # 회원가입
@@ -44,14 +44,6 @@ class LoginSerializer(serializers.Serializer):
                 return data
         else:
             raise serializers.ValidationError('이메일 주소를 다시 확인해주세요.')
-
-# 캐릭터 정보
-class CharacterSerializer(serializers.ModelSerializer):
-    # 캐릭터가 지닌 스크립트 정보
-    script = ScriptSerializer(many=False, read_only=True)
-    class Meta:
-        model = Character
-        fields = ['character_id', 'name', 'attack', 'defense', 'hp', 'agility', 'intelligence', 'script']
 
 # 프로필 정보
 class ProfileSerializer(serializers.ModelSerializer):
