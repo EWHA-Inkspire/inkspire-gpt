@@ -20,3 +20,23 @@ class Character(models.Model):
     
     def __str__(self):
         return self.name
+
+# 인벤토리 모델
+class Inventory(models.Model):
+    # item_id : 자동 생성 (PK)
+    item_id = models.AutoField(primary_key=True)
+    
+    # 외래키 지정 (Character - Inventory -> 1 : N 관계)
+    character = models.ForeignKey(Character, related_name="inventory", on_delete=models.CASCADE, db_column="character_id")
+    
+    # 아이템 명
+    name = models.CharField(default='', max_length=50, null=False, blank=False)
+    # 아이템 유형
+    type = models.CharField(max_length=10, null=False, blank=False)
+    # 아이템 설명
+    detail = models.CharField(default='', max_length=300, null=True, blank=True)
+    # 수량
+    num = models.IntegerField(default=1)
+    
+    def __str__(self):
+        return self.name
