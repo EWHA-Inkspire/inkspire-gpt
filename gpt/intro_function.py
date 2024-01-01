@@ -1,4 +1,4 @@
-from gpt_function import callGPT
+from .gpt_function import callGPT
 
 # 배경, 분위기에 맞는 마을 이름 생성
 def getTownName(background, genre):

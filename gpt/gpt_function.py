@@ -29,7 +29,7 @@ def callGPT(messages, stream):
         model=model,
         messages=messages,
         stream=stream,
-        temperature=0.8,  # 랜덤성 조절
+        temperature=0.7,  # 랜덤성 조절
     )
 
     if (stream):

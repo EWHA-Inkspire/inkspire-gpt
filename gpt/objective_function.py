@@ -1,5 +1,5 @@
-from gpt_function import callGPT
-import const as c
+from .gpt_function import callGPT
+import gpt.const as c
 import json
 
 # 게임 최종 목표 설정 함수
