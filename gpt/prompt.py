@@ -33,7 +33,7 @@ chapter_num = 1
 chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = obj.setChapterObjective(chapter_num, [], final_title, final_content,town, town_detail, genre, background)
 
 # 주사위 이벤트 등장 조건 생성
-event.setEventInfo(town, genre, background, town_detail, chapter_content, chapter_req)
+event_require, event_content, event_success, event_fail = event.setDiceEvent(town, genre, background, town_detail, chapter_content, chapter_req)
 
 # # 2. 게임 시작
 # # 시스템 설정 - 데이터 적재용
