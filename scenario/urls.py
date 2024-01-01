@@ -5,6 +5,7 @@ from .gpt_views import *
 from .npc_views import *
 from .play_views import *
 from .train_views import *
+from .event_views import *
 
 urlpatterns = [
     path('<int:pk>/script', ScriptView.as_view()),
@@ -15,4 +16,5 @@ urlpatterns = [
     path('play/intro', GameStartView.as_view()),
     path('script/<int:pk>/play',GamePlayVew.as_view()),
     path('script/<int:pk>/npc', NpcView.as_view()),
+    path('script/<int:pk>/<int:chapter>/event', EventView.as_view())
 ]

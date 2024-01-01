@@ -1,4 +1,4 @@
-from gpt_function import callGPT
+from .gpt_function import callGPT
 
 # 조력자 이름 생성
 def getProtaNPCName(background, genre):

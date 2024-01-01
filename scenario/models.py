@@ -37,13 +37,22 @@ class Goal(models.Model):
     content = models.TextField(default='', null=False, blank=False)
     # 달성 조건
     require = models.TextField(default='', null=False, blank=False)
-    # 달성 유형
-    req_type = models.IntegerField(default=0)
+    # 목표 유형
+    type = models.IntegerField(default=0)
     # 비고
     etc = models.TextField(default='', null=True, blank=True)
     
     # 목표 달성 여부
     finished = models.BooleanField(default=False)
+    
+    # 이벤트 발생 조건
+    event_req = models.TextField(default='', null=True, blank=True)
+    # 이벤트 내용
+    event_content = models.TextField(default='', null=True, blank=True)
+    # 이벤트 성공
+    success = models.TextField(default='', null=True, blank=True)
+    # 이벤트 실패
+    fail = models.TextField(default='', null=True, blank=True)
     
     def __str__(self):
         return self.content
@@ -85,7 +94,7 @@ class Npc(models.Model):
     def __str__(self):
         return self.name
 
-# 훈련 데이터 세트 모델
+# 훈련 데이터 셋 모델
 class Train(models.Model):
     # train_id : 자동 생성 (PK)
     train_id = models.BigAutoField(primary_key=True)

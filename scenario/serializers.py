@@ -11,7 +11,13 @@ class ScriptSerializer(serializers.ModelSerializer):
 class GoalSerializer(serializers.ModelSerializer):
     class Meta:
         model = Goal
-        fields = ['goal_id', 'chapter', 'title', 'content', 'require', 'req_type', 'etc', 'finished']
+        fields = ['goal_id', 'chapter', 'title', 'content', 'require', 'type', 'etc', 'finished']
+
+# 이벤트 정보
+class EventSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Goal
+        fields = ['goal_id', 'content', 'require', 'event_req', 'event_content', 'success', 'fail']
 
 # GPT 정보
 class GptSerializer(serializers.ModelSerializer):
