@@ -40,6 +40,10 @@ def checkEvent(event_req, event_content, query):
     print("callGPT")
     response = callGPT(messages=messages, stream=True)
     
+    # 문자열 분리 기준자-> ":"
+    response = response.replace('Checker:','')
+    response = response.strip()
+    print(response)
     return response
 
 # event_req = "플레이어가 숲으로 향해 천둥 망치를 찾으러 이동했을 때"
