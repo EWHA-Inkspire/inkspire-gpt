@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import Character
+from character.models import Character
 
 # 스크립트 모델
 class Script(models.Model):
