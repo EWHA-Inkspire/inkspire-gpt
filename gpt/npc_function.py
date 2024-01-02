@@ -43,7 +43,7 @@ def getAntaNPCName(background, genre):
 
     return ANPC_name
 
-# NPC 설정 생성
+# 적대자 NPC 설정 생성
 def getAntaNPCInfo(town, ANPC_name):
     npc_setting = "적대자 NPC는 " + town + \
         "에 어울리는 직업을 가져야 하고, 성격에 맞게 존댓말 혹은 반말 중 하나의 말투만을 일관되게 사용해야 해."
