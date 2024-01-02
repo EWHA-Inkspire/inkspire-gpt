@@ -39,12 +39,14 @@ chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = obj.set
 # 시스템 설정 - 데이터 적재용
 system_intro = c.SYSTEM_INTRO
 
-query = "마을 이름은 " + town + "이고, 플레이어 이름은 " + player_name + "이야. 조력자 NPC 이름은 " + \
+system_setting = "마을 이름은 " + town + "이고, 플레이어 이름은 " + player_name + "이야. 조력자 NPC 이름은 " + \
     PNPC_name + "이고," + PNPC_name + "은 " + PNPC_info + "처럼 행동해야 해. 적대자 NPC 이름은 " + \
     ANPC_name + "이고," + ANPC_name + "은 " + ANPC_info + "처럼 행동해야 해"
-query+= "이 챕터는 스토리 플롯 단계 중 "+c.story_plot_title[chapter_num]+"이며 이 단계에서는"+c.story_plot[c.story_plot_title[chapter_num]]
-query+= "이 게임의 최종 목표는 " + final_title + final_content + "이고 현재 챕터의 목표는 " + chapter_title + chapter_content + "이야."
-query += background + " 배경의 " + genre + " 분위기의 TRPG 스크립트 생성"
+system_setting += "이 챕터는 스토리 플롯 단계 중 "+c.story_plot_title[chapter_num]+"이며 이 단계에서는"+c.story_plot[c.story_plot_title[chapter_num]]
+system_setting += "이 게임의 최종 목표는 " + final_title + final_content + "이고 현재 챕터의 목표는 " + chapter_title + chapter_content + "이야."
+query = background + " 배경의 " + genre + " 분위기의 TRPG 스크립트 생성"
+
+system_intro += system_setting
 
 messages = [
     {"role": "system", "content": system_intro},
@@ -59,7 +61,7 @@ messages = [
 # '''+game_objective_summary[curr_objective]
 
 
-system_play = c.SYSTEM_PLAY
+system_play = c.SYSTEM_PLAY + system_setting
 
 # 반복문 돌면서 API 호출
 while (True):
