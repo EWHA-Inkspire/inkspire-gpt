@@ -1,5 +1,5 @@
 from django.db import models
-from account.models import Character
+from character.models import Character
 
 # 스크립트 모델
 class Script(models.Model):
@@ -37,13 +37,22 @@ class Goal(models.Model):
     content = models.TextField(default='', null=False, blank=False)
     # 달성 조건
     require = models.TextField(default='', null=False, blank=False)
-    # 달성 유형
-    req_type = models.IntegerField(default=0)
+    # 목표 유형
+    type = models.IntegerField(default=0)
     # 비고
     etc = models.TextField(default='', null=True, blank=True)
     
     # 목표 달성 여부
     finished = models.BooleanField(default=False)
+    
+    # 이벤트 발생 조건
+    event_req = models.TextField(default='', null=True, blank=True)
+    # 이벤트 내용
+    event_content = models.TextField(default='', null=True, blank=True)
+    # 이벤트 성공
+    success = models.TextField(default='', null=True, blank=True)
+    # 이벤트 실패
+    fail = models.TextField(default='', null=True, blank=True)
     
     def __str__(self):
         return self.content
@@ -66,7 +75,7 @@ class Gpt(models.Model):
     summary = models.TextField(default='', null=False, blank=False)
     
     def __str__(self):
-        return self.query
+        return self.content
 
 # NPC 모델
 class Npc(models.Model):
@@ -84,3 +93,19 @@ class Npc(models.Model):
     info = models.TextField(default='',null=False, blank=False)
     def __str__(self):
         return self.name
+
+# 훈련 데이터 셋 모델
+class Train(models.Model):
+    # train_id : 자동 생성 (PK)
+    train_id = models.BigAutoField(primary_key=True)
+    
+    # 외래키 지정 (Script - Gpt -> 1 : N 관계)
+    script = models.ForeignKey(Script, related_name='trains', on_delete=models.CASCADE, db_column="script_id")
+    
+    # 역할 (system, user, assistant)
+    role = models.CharField(default='', max_length=10, null=False, blank=False)
+    # 내용
+    content = models.TextField(default='', null=True)
+    
+    def __str__(self):
+        return self.content

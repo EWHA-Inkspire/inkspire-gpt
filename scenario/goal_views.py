@@ -1,23 +1,16 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import views
-from rest_framework.status import *
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.authentication import TokenAuthentication
-
 from .views import *
 from .serializers import GoalSerializer
 from account.models import User
 from account.views import get_token_key, get_user_id_from_token
 from gpt.intro_function import *
 from gpt.objective_function import *
+from gpt.event_function import *
 
-# 목표 생성 뷰 (pk : script_id, chapter: 1~5)
+# 목표 생성 뷰 (pk : script_id, chapter : 1~5)
 # script/<int:pk>/<int:chapter>/goal
 # chapter가 0인 경우 목표 전체 조회
 # chapter 1-5 : 해당 챕터 목표 조회
-class GoalListView(views.APIView):
+class GoalView(views.APIView):
     serializer_class = GoalSerializer
     
     @authentication_classes([TokenAuthentication])
@@ -44,7 +37,7 @@ class GoalListView(views.APIView):
         # chapter가 1일때는 최종 & 1챕터 목표 생성
         if chapter == 0:
             for i in range(0, 2):
-                goal = {'chapter' : 0, 'title' : '', 'content': '', 'require' : '', 'req_type': 0, 'etc' : ''}
+                goal = {'chapter' : 0, 'title' : '', 'content': '', 'require' : '', 'type': 0, 'etc' : ''}
                 if i == 0: # 최종 목표
                     goal['title'], goal['content'], goal['require'] = setFinalObjective(town, town_detail, genre, background)
                     f_title = goal['title']
@@ -52,7 +45,7 @@ class GoalListView(views.APIView):
                     goal['chapter'] = 5
                 else:
                     goal['chapter'] = i
-                    goal['req_type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(i-1, "", f_title, f_content, town, town_detail, genre, background)
+                    goal['type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(i, "", f_title, f_content, town, town_detail, genre, background)
                 
                 goals.append(goal)
                 
@@ -64,7 +57,7 @@ class GoalListView(views.APIView):
             for gpt in gpts:
                 prev_summ += gpt['query'] + "\n"
             goal['chapter'] = chapter
-            goal['type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(chapter-1, prev_summ, f_title, f_content, town, town_detail, genre, background)
+            goal['type'], goal['title'], goal['content'], goal['require'], goal['etc'] = setChapterObjective(chapter, prev_summ, f_title, f_content, town, town_detail, genre, background)
             goals.append(goal)
         
         # 목표 정보 저장
@@ -81,17 +74,17 @@ class GoalListView(views.APIView):
                 'data' : serializer.errors
             }, status=HTTP_400_BAD_REQUEST)
     
-    @authentication_classes([TokenAuthentication])
-    @permission_classes([IsAuthenticated])
+    # @authentication_classes([TokenAuthentication])
+    # @permission_classes([IsAuthenticated])
     def get(self, request, pk, chapter):
-        auth_token = get_token_key(request=request)
-        user_id = get_user_id_from_token(token_key=auth_token)
-        user = get_object_or_404(User, pk=user_id)
+        # auth_token = get_token_key(request=request)
+        # user_id = get_user_id_from_token(token_key=auth_token)
+        # user = get_object_or_404(User, pk=user_id)
         
-        if CheckAuth(user=user, model_name=Script, pk=pk):
-            return Response({
-                'message' : '목표 상세 조회 권한이 없습니다.'
-            }, status=HTTP_400_BAD_REQUEST)
+        # if CheckAuth(user=user, model_name=Script, pk=pk):
+        #     return Response({
+        #         'message' : '목표 상세 조회 권한이 없습니다.'
+        #     }, status=HTTP_400_BAD_REQUEST)
         
         if(chapter == 0):
             goals = Goal.objects.filter(script=pk)
@@ -111,17 +104,21 @@ class GoalListView(views.APIView):
                 'message' : '목표 정보 수정 권한이 없습니다.'
             }, status=HTTP_400_BAD_REQUEST)
         
-        goal = Goal.objects.filter(script=pk).filter(chapter=chapter)
-        serializer = self.serializer_class(data=request.data, instance=goal, partial=True)
+        result, created = Goal.objects.update_or_create(
+            script = pk,
+            chapter = chapter,
+            defaults={"finished": True}
+        )
         
-        if serializer.is_valid():
-            serializer.save()
+        serializer = self.serializer_class(data=result)
+        
+        if serializer.is_valid(raise_exception=True):
             return Response({
-                'message' : '목표 정보 수정 성공',
+                'message' : '목표 수정 성공',
                 'data' : serializer.data
             }, status=HTTP_200_OK)
         else:
             return Response({
-                'message' : '목표 정보 수정 실패',
+                'message' : '목표 수정 실패',
                 'data' : serializer.errors
             }, status=HTTP_400_BAD_REQUEST)

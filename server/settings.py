@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'rest_framework.authtoken',
     'rest_framework',
     'account',
-    'scenario',
+    'character',
+    'scenario'
 ]
 
 MIDDLEWARE = [
@@ -101,8 +102,8 @@ PW = os.getenv("MYSQL_PW")
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',
-        'NAME': 'inkspire',
-        'USER' : 'root',
+        'NAME': 'inkspire_new',
+        'USER' : 'gongryong',
         'PASSWORD' : PW,
         'HOST' : 'localhost',
         'PORT' : '3306',

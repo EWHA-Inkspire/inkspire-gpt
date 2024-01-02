@@ -1,16 +1,8 @@
-from django.shortcuts import get_object_or_404
-from rest_framework import views
-from rest_framework.status import *
-from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated
-from rest_framework.decorators import authentication_classes, permission_classes
-from rest_framework.authentication import TokenAuthentication
-
+from .views import *
 from .models import *
 from .serializers import *
 from account.models import *
 from account.views import get_token_key, get_user_id_from_token
-from .views import *
 from gpt.npc_function import *
 
 # npc 생성 (pk : script_id)

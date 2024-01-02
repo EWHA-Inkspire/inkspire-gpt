@@ -1,8 +1,9 @@
-import gpt_function as gpt
-import intro_function as intro
-import npc_function as npc
-import objective_function as obj
-import const as c
+from .gpt_function import *
+from .intro_function import *
+from .npc_function import *
+from .objective_function import *
+from .event_function import *
+import gpt.const as c
 
 # 1. 게임 생성
 # 게임 초기 선택지들 입력받기 => 나중에 선택한 키워드가 들어오도록 바꾸기
@@ -11,29 +12,32 @@ genre = input("장르: ")
 player_name = input("플레이어 이름: ")
 
 # 마을 이름 생성
-town = intro.getTownName(background, genre)
+town = getTownName(background, genre)
 # 마을 배경 설명
-town_detail = intro.getTownBackground(town, background, genre)
+town_detail = getTownBackground(town, background, genre)
 # 조력자 NPC 생성
-PNPC_name = npc.getProtaNPCName(background, genre)
+PNPC_name = getProtaNPCName(background, genre)
 print("gpt done>> Pnpc")
-PNPC_info = npc.getProtaNPCInfo(town, PNPC_name)
+PNPC_info = getProtaNPCInfo(town, PNPC_name)
 print("gpt done>> Pnpc:desc")
 print(PNPC_name + "\n")
 print(PNPC_info + "\n")
 #적대자 NPC 생성
-ANPC_name = npc.getAntaNPCName(background, genre)
+ANPC_name = getAntaNPCName(background, genre)
 print("gpt done>> Anpc")
-ANPC_info = npc.getAntaNPCInfo(town, ANPC_name)
+ANPC_info = getAntaNPCInfo(town, ANPC_name)
 print("gpt done>> Anpc:desc")
 print(ANPC_name + "\n")
 print(ANPC_info + "\n")
 # 게임 목표 설정
-final_title, final_content, final_req = obj.setFinalObjective(town=town, town_detail=town_detail,genre=genre,background=background)
+final_title, final_content, final_req = setFinalObjective(town=town, town_detail=town_detail,genre=genre,background=background)
 
-# 챕터 0 생성
-chapter_num = 0
-chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = obj.setChapterObjective(chapter_num, [], final_title, final_content,town, town_detail, genre, background)
+# 챕터 1 생성
+chapter_num = 1
+chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = setChapterObjective(chapter_num, [], final_title, final_content,town, town_detail, genre, background)
+
+# 주사위 이벤트 등장 조건 생성
+event_require, event_content, event_success, event_fail = setDiceEvent(town, genre, background, town_detail, chapter_content, chapter_req)
 
 # 2. 게임 시작
 # 시스템 설정 - 데이터 적재용
@@ -66,18 +70,21 @@ system_play = c.SYSTEM_PLAY + system_setting
 # 반복문 돌면서 API 호출
 while (True):
     # ChatGPT API 호출
-    response = gpt.callGPT(messages=messages, stream=True)
+    response = callGPT(messages=messages, stream=True)
 
     # 시스템 설정 수정
     messages[0] = {"role": "system", "content": system_play}
 
     # 이전 턴 요약 후 저장 => 2개만
-    print("처리중...")
-    response = gpt.summary(response=response)
+    print(">> Call GPT: summarizing play data")
+    response = summary(response=response)
     messages.append(
         {"role": "assistant", "content": response}
     )
-
+    obj_check = checkObjective(chapter_title,chapter_content,chapter_req,response)
+    if obj_check:
+        chapter_num += 1
+        chapter_type, chapter_title, chapter_content, chapter_req, chapter_etc = setChapterObjective(chapter_num, [], final_title, final_content,town, town_detail, genre, background)
     # 목표 달성 여부 체크
     # messages_objective = [
     #     {"role": "system", "content": system_objective_checker},
